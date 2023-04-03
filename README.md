@@ -4,6 +4,9 @@
 submodules. It simplifies the process of adding, moving, and removing Vim
 plugins, allowing you to manage them with ease.
 
+While you can probably use this for general submodule management, it has been
+specifically developed for this purpose. YMMV.
+
 ## Features
 
 - Add Vim plugins as Git submodules
@@ -13,7 +16,9 @@ plugins, allowing you to manage them with ease.
 
 ## Installation
 
-You can install this using pip
+You can install this using pip:
+
+`pip install https://github.com/harleypig/git-plugin-manager.git`
 
 ### Commands
 
@@ -22,15 +27,18 @@ You can install this using pip
 * Remove a plugin: `git plugin remove plugin-name`
 * List installed plugins: `git plugin list`
 
+The `plugin-name` is derived from the repository name with `.vim` and `.nvim`
+stripped.
+
 ## Development
 
-To install the `git-plugin`, you need to clone this repository and install the
+To develop `git-plugin`, you need to clone this repository and install the
 required dependencies using [Poetry](https://python-poetry.org/).
 
 These instructions assume you already have poetry installed.
 
-* Clone the repository: `git clone https://github.com/harleypig/git-submodule-manager.git`
-* Change to the directory: `cd git-submodule-manager`
+* Clone the repository: `git clone https://github.com/harleypig/git-plugin-manager.git`
+* Change to the directory: `cd git-plugin-manager`
 * Install the dependencies: `poetry install`
 * Build the project: `poetry build`
 
