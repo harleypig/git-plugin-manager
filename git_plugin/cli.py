@@ -6,19 +6,26 @@ from . import __version__
 
 manager = None
 
-try:
-    manager = GitPluginManager()
-
-except NoValidGitRepository as e:
-    click.echo(f"Error: {e}")
-    exit(1)
-
-except Exception as e:
-    click.echo(f"Error: {e}")
-    exit(1)
-
 # ----------------------------------------------------------------------------
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+
+# ----------------------------------------------------------------------------
+def get_manager():
+    global manager
+
+    if manager is None:
+        try:
+            manager = GitPluginManager()
+
+        except NoValidGitRepository as e:
+            click.echo(f"Error: {e}")
+            exit(1)
+
+        except Exception as e:
+            click.echo(f"Error: {e}")
+            exit(1)
+
+    return manager
 
 # ----------------------------------------------------------------------------
 @click.group(context_settings=CONTEXT_SETTINGS)
