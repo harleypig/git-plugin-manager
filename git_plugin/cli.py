@@ -6,6 +6,7 @@ from . import __version__
 
 manager = None
 
+##############################################################################
 # ----------------------------------------------------------------------------
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -19,14 +20,31 @@ def get_manager():
 
         except NoValidGitRepository as e:
             click.echo(f"Error: {e}")
-            exit(1)
 
         except Exception as e:
             click.echo(f"Error: {e}")
-            exit(1)
 
     return manager
 
+# ----------------------------------------------------------------------------
+def validate_plugin_url(ctx, param, value):
+    manager = get_manager()
+    if manager:
+        return manager.validate_plugin_url(ctx, param, value)
+
+# ----------------------------------------------------------------------------
+def validate_plugin_name(ctx, param, value):
+    manager = get_manager()
+    if manager:
+        return manager.validate_plugin_name(ctx, param, value)
+
+# ----------------------------------------------------------------------------
+def validate_pack_directory(ctx, param, value):
+    manager = get_manager()
+    if manager:
+        return manager.validate_pack_directory(ctx, param, value)
+
+##############################################################################
 # ----------------------------------------------------------------------------
 @click.group(context_settings=CONTEXT_SETTINGS)
 def cli():
@@ -49,40 +67,48 @@ cli.add_command(version)
 
 # ----------------------------------------------------------------------------
 @cli.command()
-@click.argument('url', callback=manager.validate_plugin_url, metavar='<url>')
+@click.argument('url', callback=validate_plugin_url, metavar='<url>')
 def add(url):
     """Adds the vim plugin found at 'url' as a submodule."""
-    manager.add_plugin(url)
+    manager = get_manager()
+    if manager:
+        manager.add_plugin(url)
 
 # ----------------------------------------------------------------------------
 @cli.command()
 @click.argument('name',
-                callback=manager.validate_plugin_name,
+                callback=validate_plugin_name,
                 metavar='<name>'
                 )
 @click.argument('pack',
-                callback=manager.validate_pack_directory,
+                callback=validate_pack_directory,
                 metavar='<pack>'
                 )
 def move(name, pack):
     """Moves the named submodule to the specified pack location."""
-    manager.move_plugin(name, pack)
+    manager = get_manager()
+    if manager:
+        manager.move_plugin(name, pack)
 
 # ----------------------------------------------------------------------------
 @cli.command()
 @click.argument('name',
-                callback=manager.validate_plugin_name,
+                callback=validate_plugin_name,
                 metavar='<name>'
                 )
 def remove(name):
     """Removes the named submodule."""
-    manager.remove_plugin(name)
+    manager = get_manager()
+    if manager:
+        manager.remove_plugin(name)
 
 # ----------------------------------------------------------------------------
 @cli.command()
 def list():
     """Lists the current plugins."""
-    manager.list_plugins()
+    manager = get_manager()
+    if manager:
+        manager.list_plugins()
 
 # ----------------------------------------------------------------------------
 # @cli.command()
