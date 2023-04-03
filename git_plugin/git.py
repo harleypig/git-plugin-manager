@@ -12,6 +12,10 @@ from .util import eprint
 
 ##############################################################################
 # ----------------------------------------------------------------------------
+class NoValidGitRepository(Exception):
+    pass
+
+# ----------------------------------------------------------------------------
 class GitPluginManager:
     def __init__(self):
         self.repo = self.repo()
@@ -29,20 +33,20 @@ class GitPluginManager:
         try:
             r = git.Repo(search_parent_directories = True)
             if r.bare:
-                raise ValueError("git-plugin can only run in a valid non-bare git repository")
+                raise NoValidGitRepository("git-plugin can only run in a valid non-bare git repository")
 
             os.chdir(r.working_dir)
             return r
 
         except git.InvalidGitRepositoryError:
-            raise ValueError("git-plugin can only run in a valid non-bare git repository")
+            raise NoValidGitRepository ("git-plugin can only run in a valid non-bare git repository")
 
         except git.NoSuchPathError:
-            raise ValueError("No git repository found in the current directory or a parent directories")
+            raise NoValidGitRepository("No git repository found in the current directory or parent directories")
 
     # ------------------------------------------------------------------------
     def submodule(self,
-                      sm: Union[str, git.Submodule]) -> Optional[git.Submodule]:
+                  sm: Union[str, git.Submodule]) -> Optional[git.Submodule]:
         """
         Get the submodule by its name or the submodule object itself.
 

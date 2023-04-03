@@ -1,10 +1,21 @@
-from .git import GitPluginManager
+from .git import GitPluginManager, NoValidGitRepository
 import click
 from . import __version__
 
 # import pudb
 
-manager = GitPluginManager()
+manager = None
+
+try:
+    manager = GitPluginManager()
+
+except NoValidGitRepository as e:
+    click.echo(f"Error: {e}")
+    exit(1)
+
+except Exception as e:
+    click.echo(f"Error: {e}")
+    exit(1)
 
 # ----------------------------------------------------------------------------
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
