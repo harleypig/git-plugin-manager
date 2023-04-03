@@ -18,7 +18,7 @@ entry_points = {
 
 setup_kwargs = {
     'name': 'git-submodule-manager',
-    'version': '0.2.3',
+    'version': '0.2.4',
     'description': 'An intuitive Python CLI tool for streamlined Git submodule management, enabling users to add, move, and rename submodules with ease.',
     'author': 'Alan Young',
     'author_email': 'harleypig@harleypig.com',
